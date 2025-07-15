@@ -1,0 +1,11 @@
+{
+    "Inputs": {
+        "data": [
+            {
+                "Patient_ID": "P123",
+                "Heart_Rate": 110,
+                "Blood_Oxygen": 89
+            }
+        ]
+    }
+}

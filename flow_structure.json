@@ -1,0 +1,14 @@
+{
+    "name": "MedicalDevicePredictionFlow",
+    "description": "Triggers prediction using Azure AutoML and acts on anomaly alerts.",
+    "trigger": {
+        "type": "When a new row is added",
+        "source": "Excel or SharePoint"
+    },
+    "actions": [
+        "Compose JSON",
+        "HTTP POST to AutoML Endpoint",
+        "Parse Prediction",
+        "Conditional Action (e.g. Send Email)"
+    ]
+}
