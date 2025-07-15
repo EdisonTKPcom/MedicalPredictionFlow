@@ -41,7 +41,7 @@ This section will guide you through training and deploying your AutoML model in 
 
 1.  **Go to Azure ML Studio:** Open your web browser and navigate to [https://ml.azure.com](https://ml.azure.com).
 
-    ![Azure ML Studio Homepage](/home/ubuntu/upload/search_images/G1aHmpeo1mdG.png)
+    ![Azure ML Studio Homepage](G1aHmpeo1mdG.png)
 2.  **Create new AutoML experiment:**
     *   In the left-hand navigation pane, select **Automated ML**.
     *   Click on **+ New automated ML job**.
@@ -50,43 +50,43 @@ This section will guide you through training and deploying your AutoML model in 
 3.  **Configure your experiment:**
     *   **Upload or select dataset:** Choose your dataset containing patient/device data. Ensure it includes a target column for prediction (e.g., `Alert_Flag`).
 
-    ![Select Dataset](/home/ubuntu/upload/search_images/XeXsH9uHYUMH.png)
+    ![Select Dataset](XeXsH9uHYUMH.png)
     *   **Define target column:** Specify your target column (e.g., `Alert_Flag`).
     *   **Choose task type:** Select the appropriate task type (e.g., `Classification` for predicting alerts).
 
-    ![Configure AutoML Experiment](/home/ubuntu/upload/search_images/1CwlYueFxJuL.png)
+    ![Configure AutoML Experiment](1CwlYueFxJuL.png)
 4.  **Deploy the best model as a real-time endpoint:** Once the AutoML experiment completes and identifies the best model, you need to deploy it.
     *   Navigate to the **Models** tab within your AutoML job run.
     *   Select the best performing model and click on **Deploy** > **Deploy to real-time endpoint**.
 
-    ![Deploy Model to Real-time Endpoint](/home/ubuntu/upload/search_images/qZN0fDZZ5MlR.png)
+    ![Deploy Model to Real-time Endpoint](qZN0fDZZ5MlR.png)
     *   **Note the endpoint URL, input schema, and API key:** These details are crucial for integrating with Power Automate. You can find them in the **Endpoints** section of your Azure ML Workspace after deployment.
 
-    ![Real-time Endpoint Details](/home/ubuntu/upload/search_images/D2Y5dlshAMmp.png)
+    ![Real-time Endpoint Details](D2Y5dlshAMmp.png)
 ### 🔹 Step 2: Create Power Automate Flow
 
 This section details how to initiate your Power Automate flow.
 
 1.  **Visit Power Automate:** Open your web browser and go to [https://flow.microsoft.com](https://flow.microsoft.com).
 
-    ![Power Automate Homepage](/home/ubuntu/upload/search_images/uLWdplqOs9lU.png)
+    ![Power Automate Homepage](uLWdplqOs9lU.png)
 2.  **Select Create > Automated cloud flow:**
 
-    ![Create Automated Cloud Flow](/home/ubuntu/upload/search_images/RuHksI1cqmAF.png)
+    ![Create Automated Cloud Flow](RuHksI1cqmAF.png)
 3.  **Choose a trigger:** Based on your data source, select the appropriate trigger.
     *   **“When a new row is added” (Excel):**
 
-        ![Excel Trigger](/home/ubuntu/upload/search_images/MLy4ww6StUJq.jpg)
+        ![Excel Trigger](MLy4ww6StUJq.jpg)
     *   **“When an item is created” (SharePoint):**
 
-        ![SharePoint Trigger](/home/ubuntu/upload/search_images/GopP2L5skhb5.jpg)
+        ![SharePoint Trigger](GopP2L5skhb5.jpg)
 ### 🔹 Step 3: Format Data as JSON
 
 Use a **Compose** or **Select** block to structure the input data into the JSON format required by your Azure AutoML endpoint.
 
 1.  **Add a Compose action:** Search for "Compose" and add the action.
 
-    ![Add Compose Action](/home/ubuntu/upload/search_images/UriJlSnRIQoq.png)
+    ![Add Compose Action](UriJlSnRIQoq.png)
 2.  **Configure Compose action:** Input the JSON structure with dynamic content from your trigger.
 
     ```json
@@ -105,14 +105,14 @@ Use a **Compose** or **Select** block to structure the input data into the JSON 
 
     *Replace `P123`, `98`, `91` with dynamic content from your trigger (e.g., from Excel or SharePoint).* 
 
-    ![Configure Compose Action](/home/ubuntu/upload/search_images/PQA1FLCjJY2O.jpg)
+    ![Configure Compose Action](PQA1FLCjJY2O.jpg)
 ### 🔹 Step 4: Call AutoML API
 
 Use the **HTTP** action to send a POST request to your Azure AutoML endpoint.
 
 1.  **Add an HTTP action:** Search for "HTTP" and add the action.
 
-    ![Add HTTP Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+    ![Add HTTP Action](WpfNzQj667Zx.png)
 2.  **Configure HTTP action:**
     *   **Method:** `POST`
     *   **URI:** Your AutoML endpoint URL (from Step 1).
@@ -121,14 +121,14 @@ Use the **HTTP** action to send a POST request to your Azure AutoML endpoint.
         *   `Content-Type`: `application/json`
     *   **Body:** Output from the previous **Compose** action.
 
-    ![Configure HTTP Action](/home/ubuntu/upload/search_images/PTzzCz3IAtiw.jpg)
+    ![Configure HTTP Action](PTzzCz3IAtiw.jpg)
 ### 🔹 Step 5: Parse JSON Response
 
 Use the **Parse JSON** action to extract the "Scored Labels" from the AutoML API response.
 
 1.  **Add a Parse JSON action:** Search for "Parse JSON" and add the action.
 
-    ![Add Parse JSON Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+    ![Add Parse JSON Action](WpfNzQj667Zx.png)
 2.  **Configure Parse JSON action:**
     *   **Content:** Body from the **HTTP** action.
     *   **Schema:** Generate from a sample payload. The expected response format is:
@@ -141,31 +141,31 @@ Use the **Parse JSON** action to extract the "Scored Labels" from the AutoML API
         }
         ```
 
-    ![Configure Parse JSON Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+    ![Configure Parse JSON Action](WpfNzQj667Zx.png)
 ### 🔹 Step 6: Add Actions
 
 Use a **Condition** block to define actions based on the prediction result.
 
 1.  **Add a Condition action:** Search for "Condition" and add the action.
 
-    ![Add Condition Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+    ![Add Condition Action](WpfNzQj667Zx.png)
 2.  **Configure Condition:** Set the condition to check if `Scored Labels` (from Parse JSON) is equal to `1` (or your anomaly flag).
 
-    ![Configure Condition](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+    ![Configure Condition](WpfNzQj667Zx.png)
 3.  **If `Scored Labels` = 1 (Anomaly):**
     *   **Send Outlook email to clinician:** Add a "Send an email (V2)" action.
 
-        ![Send Email Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+        ![Send Email Action](WpfNzQj667Zx.png)
     *   **Log to SharePoint “Medical Alerts”:** Add a "Create item" action for SharePoint.
 
-        ![SharePoint Log Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+        ![SharePoint Log Action](WpfNzQj667Zx.png)
     *   **Trigger Microsoft Teams notification:** Add a "Post a message" action for Microsoft Teams.
 
-        ![Teams Notification Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+        ![Teams Notification Action](WpfNzQj667Zx.png)
 4.  **Else (Normal Record):**
     *   **Log as normal patient record:** Add an action to log the normal record, e.g., another SharePoint "Create item" action to a different list or an Excel row.
 
-        ![Normal Record Log Action](/home/ubuntu/upload/search_images/WpfNzQj667Zx.png)
+        ![Normal Record Log Action](WpfNzQj667Zx.png)
 ---
 
 ## 🧪 Example
