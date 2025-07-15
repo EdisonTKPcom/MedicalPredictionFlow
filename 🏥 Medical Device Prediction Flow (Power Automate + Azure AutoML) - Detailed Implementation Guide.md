@@ -46,7 +46,7 @@ This section will guide you through training and deploying your AutoML model in 
     *   In the left-hand navigation pane, select **Automated ML**.
     *   Click on **+ New automated ML job**.
 
-    ![Create New Automated ML Job](/home/ubuntu/upload/search_images/A8NvfhJaY0jl.png)
+    ![Create New Automated ML Job](A8NvfhJaY0jl.png)
 3.  **Configure your experiment:**
     *   **Upload or select dataset:** Choose your dataset containing patient/device data. Ensure it includes a target column for prediction (e.g., `Alert_Flag`).
 
